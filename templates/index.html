@@ -1,0 +1,55 @@
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+	
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+	
+</head>
+
+<body>
+    <div style="background-color:#0066ff; height:100px; width:100%">
+        <h1 style="color:white; text-align:center; padding-top: 25px; font-family: Play; font-size: 50px; font-weight: 1000">Image Recognition</h1>			
+    </div>
+    <div style>
+        <form id="form" method="post" enctype="multipart/form-data">
+            <p style="color:black; text-align:left; padding-top: 25px; font-family: Play; font-size: 20px; font-weight: 1000">Please upload the files in png/jpeg format:  <input type = "file" name = "file" multiple /></p>
+            <p><input type = "button" value = "Upload" onclick='upload()'  style="color:black; font-family: Play; font-size: 20px; font-weight: 1000; display:block"/></p>
+        </form>			
+    </div>
+
+    <div class="col-md-8" style="display: inline-block;float: left;">	
+        <div  class="result_table table-responsive">
+        </div>
+    </div>
+    
+</body>
+
+<script>
+function upload(data){
+        var $res_table = $('.result_table');
+        var form_data = new FormData($('#form')[0]);
+		if($("input[type='file']")[0].files.length!=0)
+        {
+        $.ajax({
+            type:"POST",
+            url:"http://localhost:5000/predict",
+            data:form_data,
+            contentType: false,
+            processData: false,
+            crossDomain: true,
+            success:function(res){
+                $res_table.html(res);
+            }
+        });
+    }else
+	{
+		alert("please upload a file");
+	}
+}
+</script> 
+</html>
